@@ -6,7 +6,7 @@ from SE.sender import Inboxing as SeSender
 from logs.logging import safe_log,load_log
 
 
-bot = telebot.TeleBot("6826699183:AAEvl2vfnaOf4MlRYrmrPBQR_dOG6M2jYco")
+bot = telebot.TeleBot("6434792104:AAHSDKA-ABFI5jgr2TDhCoko0wfQGu9Cp5o")
 
 
 authorized_users = [1973099958,5084753170,1971995086]
