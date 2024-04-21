@@ -79,7 +79,7 @@ def runner_message_handler(message):
     bot.send_message(user_id,"SMTP : {}".format(user_selection[str(user_id)]["SMTP"]))
     bot.send_message(user_id,"Testing ...")
     sn = SeSender(spoofed=infos["spoof"][0],smtps=infos["SMTP"],letter=infos["content"],subject=infos["subject"])
-    try: sn.start(["saymeow,hahahaha@doesntmatter.xyz"],bot,user_id)
+    try: sn.start(["TEST,frankmartz09@mail.com"],bot,user_id)
     except Exception as e:
         name = safe_log(str(e))
         keyboard = types.InlineKeyboardMarkup(row_width=1)
