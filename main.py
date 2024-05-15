@@ -13,6 +13,23 @@ authorized_users = [1973099958,5084753170,1971995086]
 
 user_selection = {}
 
+def generate_new_subject(base_subject, counter):
+    return f"{base_subject} - {counter}"
+
+class SeSender:
+    def __init__(self, spoofed, smtps, letter, subject):
+        self.spoofed = spoofed
+        self.smtps = smtps
+        self.letter = letter
+        self.base_subject = subject
+        self.counter = 1
+
+    def start(self, emails, bot, user_id):
+        for email in emails:
+            current_subject = generate_new_subject(self.base_subject, self.counter)
+            self.send_email(email, current_subject)
+            self.counter += 1
+
 @bot.message_handler(commands=['start'],func = lambda message : message.chat.id in authorized_users)
 def main_function(message):
     if user_selection.get(str(message.chat.id)) == None: 
