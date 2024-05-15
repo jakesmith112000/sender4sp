@@ -1,4 +1,5 @@
 import telebot
+import random
 import requests
 from telebot import types
 from telebot.types import Message
@@ -13,22 +14,28 @@ authorized_users = [1973099958,5084753170,1971995086]
 
 user_selection = {}
 
-def generate_new_subject(base_subject, counter):
-    return f"{base_subject} - {counter}"
+# Load subjects from subject.txt into a list
+with open('subject.txt', 'r') as file:
+    subjects = file.readlines()
 
-class SeSender:
-    def __init__(self, spoofed, smtps, letter, subject):
-        self.spoofed = spoofed
-        self.smtps = smtps
-        self.letter = letter
-        self.base_subject = subject
-        self.counter = 1
+# Function to get a random subject from the list
+def get_random_subject():
+    return random.choice(subjects).strip()  # Use strip() to remove newline characters
 
-    def start(self, emails, bot, user_id):
-        for email in emails:
-            current_subject = generate_new_subject(self.base_subject, self.counter)
-            self.send_email(email, current_subject)
-            self.counter += 1
+@bot.message_handler(func=lambda message: message.text == "Run Sender")
+def runner_message_handler(message):
+    user_id = message.chat.id
+    if user_selection.get(str(user_id)) == None or None in list(user_selection[str(user_id)].values())[:5]:
+        bot.send_message(user_id, "Please SET Up requirements before starting the sending. restart on /start")
+        return None
+    bot.send_message(user_id, "Loading informations ... ")
+    bot.send_message(user_id, "Subject : {}".format(user_selection[str(user_id)]["subject"]))
+    bot.send_message(user_id, "Spoofed : {}".format(user_selection[str(user_id)]["spoof"]))
+    bot.send_message(user_id, "SMTP : {}".format(user_selection[str(user_id)]["SMTP"]))
+    bot.send_message(user_id, "Please SEND Emails \n\n Emails format should be : \nfname,email\n\nPlease Respect the format. you can either send a file or text. \nyou can send more than one email (per line)")
+    user_selection[str(user_id)]["emails"] = True
+    # Update the subject before sending each email
+    user_selection[str(user_id)]["subject"] = get_random_subject()
 
 @bot.message_handler(commands=['start'],func = lambda message : message.chat.id in authorized_users)
 def main_function(message):
